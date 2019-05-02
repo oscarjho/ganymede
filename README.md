@@ -10,9 +10,8 @@ npm start
 
 # Server runs on http://localhost:5000
 
-App Info
-Author
-Oscar Hernandez
+
+Author: Oscar Hernandez
 
 Version
 1.0.0
