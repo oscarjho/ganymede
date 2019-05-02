@@ -5,7 +5,7 @@ Back-end App to interact with themisto App using express, mongoose, body-parser,
 # Install dependencies for server
 npm install
 
-# Run the Express server only
+# Run the Express server 
 npm start
 
 # Server runs on http://localhost:5000
