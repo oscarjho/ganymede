@@ -2,11 +2,17 @@ const express = require('express');
 const router = express.Router();
 const axios = require('axios');
 
-//Load SearchOrder Model
+// Load SearchOrder Model
 const SearchOrder = require('../../models/SearchOrder');
 
 // Load Validation
 const validateregister = require('../../validation/validateregister');
+
+// @route   GET api/product/test
+// @desc    Tests product route
+// @access  Public
+router.get('/test', (req, res) => res.json({ msg: 'Posts Works' }));
+
 
 // @route   GET api/products/
 // @desc    This is the homepage
