@@ -38,4 +38,4 @@ app.listen(port, () => console.log(`Server running on port ${port}`));
 // @route   GET /
 // @desc    /
 // @access  Public
-router.get('/', (req, res) => res.json({ msg: 'ganymede' }));
+app.get('/', (req, res) => res.json({ msg: 'ganymede' }));
