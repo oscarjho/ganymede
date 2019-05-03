@@ -1,8 +1,5 @@
-// Bring Express
 const express = require('express');
-// Bring Mongoose
 const mongoose = require('mongoose');
-// Bring Body Parser
 const bodyParser = require('body-parser');
 
 //Init app
@@ -37,4 +34,3 @@ app.use('/api/product', products);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
-

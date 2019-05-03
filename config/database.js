@@ -1,7 +1,6 @@
 module.exports = {
-
-  //LOCAL MONGO
-  mongoURI: 'mongodb://localhost:27017/ganymede',
+  
+  mongoURI: 'mongodb+srv://Oscar:Oo12345!@mongodb-54ttx.mongodb.net/test?retryWrites=true',
   secretOrKey: 'secret'
 
 } 
