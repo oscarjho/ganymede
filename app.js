@@ -34,3 +34,8 @@ app.use('/api/product', products);
 const port = process.env.PORT || 5000;
 
 app.listen(port, () => console.log(`Server running on port ${port}`));
+
+// @route   GET /
+// @desc    /
+// @access  Public
+router.get('/', (req, res) => res.json({ msg: 'ganymede' }));
