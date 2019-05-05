@@ -128,5 +128,39 @@ router.post('/save-search', function(req, res) {
 
 });
 
+// @route   DELETE api/product/search-order/delete/:id
+// @desc    Delete post
+// @access  Public
+router.delete(
+  'search-order/delete/:id',
+  (req, res) => {
+    SearchOrder
+      .findOne({_id: req.params.id})
+      .then(
+        res => {
+          res.remove().then(()=> res.jsn({ success: true}));
+        }
+      )
+      .catch(err => res.status(404).json({searchorder: 'No search-order found'}));
+    /*
+    Profile.findOne({ user: req.user.id }).then(profile => {
+      Post.findById(req.params.id)
+        .then(post => {
+          // Check for post owner
+          if (post.user.toString() !== req.user.id) {
+            return res
+              .status(401)
+              .json({ notauthorized: 'User not authorized' });
+          }
+
+          // Delete
+          post.remove().then(() => res.json({ success: true }));
+        })
+        .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
+    });
+    */
+  }
+);
+
 
 module.exports = router;
