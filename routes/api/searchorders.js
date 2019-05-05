@@ -132,7 +132,7 @@ router.post('/save-search', function(req, res) {
 // @desc    Delete post
 // @access  Public
 router.delete(
-  'search-order/delete/:id',
+  '/search-order/delete/:id',
   (req, res) => {
     SearchOrder
       .findOne({_id: req.params.id})
