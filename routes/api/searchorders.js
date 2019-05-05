@@ -137,8 +137,8 @@ router.delete(
     SearchOrder
       .findOne({_id: req.params.id})
       .then(
-        res => {
-          res.remove().then(()=> res.jsn({ success: true}));
+        order => {
+          order.remove().then(()=> res.json({ success: true}));
         }
       )
       .catch(err => res.status(404).json({searchorder: 'No search-order found'}));
