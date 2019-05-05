@@ -101,15 +101,6 @@ router.get('/search-order/:id', (req, res) => {
 // @access  Public
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
-  /*
-  let productos = req.body.productresult;
-  
-  let productosrev = []
-  productos.forEach( element => {
-    if(element.length > 0){
-      productosrev.push(element)
-    }
-  })*/
 
   let id = req.body._id;
 
