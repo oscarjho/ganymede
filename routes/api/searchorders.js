@@ -9,9 +9,9 @@ const SearchOrder = require('../../models/SearchOrder');
 const validateregister = require('../../validation/validateregister');
 
 // @route   GET api/product/test
-// @desc    Tests product route
+// @desc    Tests this route
 // @access  Public
-router.get('/test', (req, res) => res.json({ msg: 'Posts Works' }));
+router.get('/test', (req, res) => res.json({ msg: 'Api works' }));
 
 
 // @route   GET api/products/
@@ -102,11 +102,20 @@ router.get('/search-order/:id', (req, res) => {
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
 
+  let productos = req.body.productresult;
+  
+  let productosrev = []
+  productos.forEach( element => {
+    if(element.length > 0){
+      productosrev.push(element)
+    }
+  })
+
   let id = req.body._id;
 
     SearchOrder.findOneAndUpdate(
       { _id: id}, 
-      {$set: {orderstatus: req.body.orderstatus, productresult: req.body.productresult
+      {$set: {orderstatus: req.body.orderstatus, productresult: productosrev
       }},
       (err, resp ) => {
         if (err) {
