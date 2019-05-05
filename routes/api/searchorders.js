@@ -101,7 +101,7 @@ router.get('/search-order/:id', (req, res) => {
 // @access  Public
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
-
+  /*
   let productos = req.body.productresult;
   
   let productosrev = []
@@ -109,13 +109,13 @@ router.post('/save-search', function(req, res) {
     if(element.length > 0){
       productosrev.push(element)
     }
-  })
+  })*/
 
   let id = req.body._id;
 
     SearchOrder.findOneAndUpdate(
       { _id: id}, 
-      {$set: {orderstatus: req.body.orderstatus, productresult: productosrev
+      {$set: {orderstatus: req.body.orderstatus, productresult: req.body.productresult
       }},
       (err, resp ) => {
         if (err) {
@@ -129,7 +129,7 @@ router.post('/save-search', function(req, res) {
 });
 
 // @route   DELETE api/product/search-order/delete/:id
-// @desc    Delete post
+// @desc    Delete search order
 // @access  Public
 router.delete(
   '/search-order/delete/:id',
@@ -142,23 +142,6 @@ router.delete(
         }
       )
       .catch(err => res.status(404).json({searchorder: 'No search-order found'}));
-    /*
-    Profile.findOne({ user: req.user.id }).then(profile => {
-      Post.findById(req.params.id)
-        .then(post => {
-          // Check for post owner
-          if (post.user.toString() !== req.user.id) {
-            return res
-              .status(401)
-              .json({ notauthorized: 'User not authorized' });
-          }
-
-          // Delete
-          post.remove().then(() => res.json({ success: true }));
-        })
-        .catch(err => res.status(404).json({ postnotfound: 'No post found' }));
-    });
-    */
   }
 );
 
