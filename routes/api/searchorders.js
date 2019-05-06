@@ -105,18 +105,23 @@ router.post('/save-search', function(req, res) {
   let rev = req.body.productresult;
   let productresult = rev.filter(value => Object.keys(value).length !== 0);
 
+  let ojb = {
+    orderstatus: '',
+    productresult: req.body.productresult
+  }
+
   if (productresult.length == 0) {
-    let orderstatus = "failed";
+    ojb.orderstatus = "failed";
   }
   else {
-    let orderstatus = "fullfilled";
+    ojb.orderstatus = "fullfilled";
   }
 
   let id = req.body._id;
 
     SearchOrder.findOneAndUpdate(
       { _id: id}, 
-      {$set: {orderstatus: orderstatus, productresult: productresult
+      {$set: {orderstatus: ojb.orderstatus, productresult: productresult
       }},
       (err, resp ) => {
         if (err) {
