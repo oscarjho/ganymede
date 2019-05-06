@@ -102,12 +102,16 @@ router.get('/search-order/:id', (req, res) => {
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
 
+  let rev = req.body.productresult;
+  let productresult = rev.filter(value => Object.keys(value).length !== 0);
+
+  console.log(productresult.length);
 
   let id = req.body._id;
 
     SearchOrder.findOneAndUpdate(
       { _id: id}, 
-      {$set: {orderstatus: req.body.orderstatus, productresult: req.body.productresult
+      {$set: {orderstatus: req.body.orderstatus, productresult: productresult
       }},
       (err, resp ) => {
         if (err) {
