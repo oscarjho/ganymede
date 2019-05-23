@@ -64,11 +64,19 @@ router.post('/search', function(req, res) {
       orderstatus: "received"
     })
   
+    if (process.env.NODE_ENV === 'production') {
+      //production
+      var url = 'https://themisto2.herokuapp.com/search';
+    } else {
+      //dev
+      var url = 'http://localhost:3000/search';
+    }
+
     newOrder.save().
       then(
         newOrder => 
           axios
-            .post('https://themisto2.herokuapp.com/search', newOrder)
+            .post(url, newOrder)
             .then(response => 
               SearchOrder.findOneAndUpdate(
                  { _id: response.data._id},
@@ -85,6 +93,8 @@ router.post('/search', function(req, res) {
             .catch(err => console.log(err))
         )
       .catch(err => console.log(err))
+      
+
   } //Close if user and password exists
 
 }); // Close search
@@ -110,20 +120,44 @@ router.get('/search-order/:id', (req, res) => {
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
 
-  let id = req.body._id;
-  console.log('We save the result')
-    SearchOrder.findOneAndUpdate(
-      { _id: id}, 
-      {$set: {orderstatus: req.body.orderstatus, productresult: req.body.productresult
-      }},
-      (err, resp ) => {
-        if (err) {
-          //Not found
-          res.json(err)
-        }
-        res.json(resp)
+    let u = req.body.searchdata.options.user;
+    let p = req.body.searchdata.options.password;
+
+    if (!users.some( el => el.user === u && el.password === p)) {
+      errors.options="Wrong user or password.";
+      res.json(errors);
+    } else {
+      // If the user and password exists and match
+
+      if (req.body.productresult) {
+        var orderstatus = "fullfilled";
+      } else {
+        var orderstatus = "failed"
       }
-    )
+
+      console.log(orderstatus);
+
+      // Set the object
+      let obj = {
+        id: req.body._id,
+        orderstatus: orderstatus,
+        productresult: req.body.productresult
+      }
+
+      console.log('We save the result')
+        SearchOrder.findOneAndUpdate(
+          { _id: obj.id}, 
+          {$set: {orderstatus: obj.orderstatus, productresult: obj.productresult
+          }},
+          (err, resp ) => {
+            if (err) {
+              //Not found
+              res.json(err)
+            }
+            res.json(resp)
+          }
+        )
+  } //Close Else of if the user and password exists
 
 });
 
