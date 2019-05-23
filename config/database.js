@@ -1,6 +1,5 @@
-module.exports = {
-  
-  mongoURI: 'mongodb+srv://Oscar:Oo12345!@mongodb-54ttx.mongodb.net/test?retryWrites=true',
-  secretOrKey: 'secret'
-
-} 
+if (process.env.NODE_ENV === 'production') {
+  module.exports = require('./database_prod');
+} else {
+  module.exports = require('./database_dev');
+}

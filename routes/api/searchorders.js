@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const axios = require('axios');
+const users = require('../../validation/users');
 
 // Load SearchOrder Model
 const SearchOrder = require('../../models/SearchOrder');
@@ -36,53 +37,59 @@ router.get('/search-orders', function(req, res) {
 // respond 
 router.post('/search', function(req, res) {
 
-    const { errors, isValid } = validateregister(req.body);
+  const { errors, isValid } = validateregister(req.body);
 
-    // Check Validation
-    if (!isValid) {
-      return res.status(400).json(errors);
-    }
+  // Check Validation
+  if (!isValid) {
+    return res.status(400).json(errors);
+  }
 
+  let u = req.body.options.user;
+  let p = req.body.options.password;
+
+  if (!users.some( el => el.user === u && el.password === p)) {
+    errors.options="Wrong user or password.";
+    res.json(errors);
+  } else {
+    // If the user and password exists and match
     const searchdata = {
       query: req.body.query,
       provider: req.body.provider,
       options: req.body.options,
       callbackurl: req.body.callbackurl
     }
-
+  
     const newOrder = new SearchOrder ({
       searchdata: searchdata,
-      orderstatus: "received",
-      productresult: {}
+      orderstatus: "received"
     })
-
+  
     newOrder.save().
       then(
         newOrder => 
           axios
-            .post('https://themisto2.herokuapp.com/search', newOrder)
+            .post('http://localhost:3000/search', newOrder)
             .then(response => 
               SearchOrder.findOneAndUpdate(
-                { _id: response.data._id},
-                { $set: response.data},
-                { new: true}, 
-                (err, resp ) => {
+                 { _id: response.data._id},
+                 { $set: response.data},
+                 { new: true}, 
+                 (err, resp ) => {
                   if (err) {
                     console.log('error en findoneandupdate', err)
                   }
-                  console.log(resp)
                   res.json(resp)
                 }
-
-              )
+               )
             )
             .catch(err => console.log(err))
         )
       .catch(err => console.log(err))
-                
-});
+  } //Close if user and password exists
 
-// @route   GET api/product/:id
+}); // Close search
+
+// @route   GET api/product/search-order/:id
 // @desc    Get search orders by id
 // @access  Public
 router.get('/search-order/:id', (req, res) => {
@@ -94,7 +101,8 @@ router.get('/search-order/:id', (req, res) => {
     res.json(resp)
   })
 
-})
+});
+
 
 // @route   POST api/product/save-search
 // @desc    It receive the searchorder and sends it to themisto
@@ -102,26 +110,11 @@ router.get('/search-order/:id', (req, res) => {
 // TODO: RESPOND
 router.post('/save-search', function(req, res) { 
 
-  let rev = req.body.productresult;
-  let productresult = rev.filter(value => Object.keys(value).length !== 0);
-
-  let ojb = {
-    orderstatus: '',
-    productresult: req.body.productresult
-  }
-
-  if (productresult.length == 0) {
-    ojb.orderstatus = "failed";
-  }
-  else {
-    ojb.orderstatus = "fullfilled";
-  }
-
   let id = req.body._id;
-
+  console.log('We save the result')
     SearchOrder.findOneAndUpdate(
       { _id: id}, 
-      {$set: {orderstatus: ojb.orderstatus, productresult: productresult
+      {$set: {orderstatus: req.body.orderstatus, productresult: req.body.productresult
       }},
       (err, resp ) => {
         if (err) {

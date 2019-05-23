@@ -12,14 +12,12 @@ const products = require('./routes/api/searchorders');
 app.use(bodyParser.urlencoded({ extended: false }));
 // parse application/json
 app.use(bodyParser.json());
-// parse application/vnd.api+json as json
-app.use(bodyParser.json({ type: 'application/vnd.api+json' }))
+
 
 // DB Config
 const db = require('./config/database').mongoURI;
 
-// SET this function
-mongoose.set('useFindAndModify', false);
+
 // Connect to MongoDB
 mongoose
   .connect(
