@@ -42,12 +42,6 @@ module.exports = function validateRegisterInput(data) {
     errors.provider = 'provider must be between 2 and 30 characters';
   }
 
-  if (!isEmpty(data.callbackurl)) {
-    if (!Validator.isURL(data.callbackurl)) {
-      errors.callbackurl = 'Not a valid URL';
-    }
-  }
-
   return {
     errors,
     isValid: isEmpty(errors)
