@@ -68,7 +68,7 @@ router.post('/search', function(req, res) {
       then(
         newOrder => 
           axios
-            .post('https://themisto2.herokuapp.com//search', newOrder)
+            .post('https://themisto2.herokuapp.com/search', newOrder)
             .then(response => 
               SearchOrder.findOneAndUpdate(
                  { _id: response.data._id},
